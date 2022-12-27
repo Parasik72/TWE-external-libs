@@ -19,13 +19,13 @@
         https://glad.dav1d.de/#profile=core&language=c&specification=gl&loader=on&api=gl%3D3.3
 */
 
-#if !defined(__glad_h_) && !defined(__gl_h_)
+#if !defined(__glad_h_) //&& !defined(__gl_h_)
 // #ifndef __glad_h_
 #define __glad_h_
 
-#ifdef __gl_h_
-#error OpenGL header already included, remove this include, glad already provides it
-#endif
+// #ifdef __gl_h_
+// #error OpenGL header already included, remove this include, glad already provides it
+// #endif
 #define __gl_h_
 
 #if defined(_WIN32) && !defined(APIENTRYGLAD) && !defined(__CYGWIN__) && !defined(__SCITECH_SNAP__)
