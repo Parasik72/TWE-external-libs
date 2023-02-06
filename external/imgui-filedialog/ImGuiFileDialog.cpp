@@ -2352,20 +2352,20 @@ namespace IGFD
 
 		ImGui::SameLine();
 		
-		if (IMGUI_BUTTON(editPathButtonString))
-		{
-			puInputPathActivated = !puInputPathActivated;
-			if (puInputPathActivated)
-			{
-				auto endIt = prCurrentPathDecomposition.end();
-				prCurrentPath = ComposeNewPath(--endIt);
-				IGFD::Utils::SetBuffer(puInputPathBuffer, MAX_PATH_BUFFER_SIZE, prCurrentPath);
-			}
-		}
-		if (ImGui::IsItemHovered())
-			ImGui::SetTooltip(buttonEditPathString);
+		// if (IMGUI_BUTTON(editPathButtonString))
+		// {
+		// 	puInputPathActivated = !puInputPathActivated;
+		// 	if (puInputPathActivated)
+		// 	{
+		// 		auto endIt = prCurrentPathDecomposition.end();
+		// 		prCurrentPath = ComposeNewPath(--endIt);
+		// 		IGFD::Utils::SetBuffer(puInputPathBuffer, MAX_PATH_BUFFER_SIZE, prCurrentPath);
+		// 	}
+		// }
+		// if (ImGui::IsItemHovered())
+		// 	ImGui::SetTooltip(buttonEditPathString);
 
-		ImGui::SameLine();
+		// ImGui::SameLine();
 
 		ImGui::SeparatorEx(ImGuiSeparatorFlags_Vertical);
 
@@ -2378,6 +2378,8 @@ namespace IGFD
 			{
 				ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 				ImGui::InputText("##pathedition", puInputPathBuffer, MAX_PATH_BUFFER_SIZE);
+				if(ImGui::IsItemClicked(ImGuiMouseButton_Right))
+					puInputPathActivated = false;
 				ImGui::PopItemWidth();
 			}
 			else
@@ -2553,9 +2555,12 @@ namespace IGFD
 			auto gio = ImGui::GetIO();
 			if (ImGui::IsKeyReleased(ImGuiKey_Enter))
 			{
-				puFileManager.SetCurrentPath(std::string(puFileManager.puInputPathBuffer));
-				puFileManager.OpenCurrentPath(*this);
-				puFileManager.puInputPathActivated = false;
+				std::string curPath = std::string(puFileManager.puInputPathBuffer);
+				if(std::filesystem::exists(curPath)) {
+					puFileManager.SetCurrentPath(curPath);
+					puFileManager.OpenCurrentPath(*this);
+					puFileManager.puInputPathActivated = false;
+				}
 			}
 			if (ImGui::IsKeyReleased(ImGuiKey_Escape))
 			{
